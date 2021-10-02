@@ -9,21 +9,22 @@ from pointnet_dataset import PointNetDataset
 from torch_helper import train
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--traindir', '-a', type=str, help='Directory for train files')
-parser.add_argument('--testdir', '-b', type=str, help='Directory for test files')
+parser.add_argument('--datadir', '-d', type=str, help='Directory for .pcd files')
 args = parser.parse_args()
 
 batch_size = 24
+train_ratio = 0.8
 num_categories = 2
 num_epochs = 200
 learning_rate = 0.001
 num_points = 1024
 decay_rate = 1e-4
 
-train_dataset = PointNetDataset(args.traindir)
-train_size = len(train_dataset)
-val_dataset = PointNetDataset(args.testdir)
-val_size = len(val_dataset)
+total_dataset = PointNetDataset(args.datadir)
+total_size = len(total_dataset)
+train_size = int(train_ratio * total_size)
+val_size = total_size = train_size
+train_dataset, val_dataset = torch.utils.data.random_split(total_dataset, [train_size, val_size])
 train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True, num_workers=10, drop_last=True)
 val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=args.batch_size, shuffle=False, num_workers=10)
 

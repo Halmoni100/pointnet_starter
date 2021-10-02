@@ -13,6 +13,7 @@ class PointNetDataset(Dataset):
         for i in range(len(classdirs)):
             classdir = classdirs[i]
             files = os.listdir(classdir)
+            files.sort()
             for filename in files:
                 if filename.split('.')[-1] != ".pcd":
                     raise ValueError("Found non .pcd file in toppath")
