@@ -11,7 +11,7 @@ import train
 
 batch_size = 24
 train_ratio = 0.8
-num_categories = 3
+num_categories = 4
 num_epochs = 200
 learning_rate = 0.001
 num_points = 1024
@@ -66,4 +66,4 @@ scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.7)
 
 train.train(train_dataloader, val_dataloader, train_size, val_size, inputs_labels_func,
             model, criterion, optimizer, metric=metric, metric_name="accuracy", scheduler=scheduler,
-            device=device, num_epochs=num_epochs, do_carriage_return=False)
+            device=device, num_epochs=num_epochs, do_carriage_return=True)

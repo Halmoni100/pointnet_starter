@@ -20,6 +20,7 @@ class PointNetDataset(Dataset):
                     raise ValueError("Found non .pcd file in toppath: ", filename)
                 filepath = os.path.join(classpath, filename)
                 self.points.append(parse_pcd_file(filepath,
+                                                  leeway=30,
                                                   dtype=dtype))
                 self.labels.append(np.array(i, dtype=dtype))
 
