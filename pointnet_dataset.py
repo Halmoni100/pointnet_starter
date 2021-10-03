@@ -12,15 +12,16 @@ class PointNetDataset(Dataset):
         self.labels = []
         for i in range(len(classdirs)):
             classdir = classdirs[i]
-            files = os.listdir(classdir)
+            classpath = os.path.join(toppath, classdir)
+            files = os.listdir(classpath)
             files.sort()
             for filename in files:
-                if filename.split('.')[-1] != ".pcd":
-                    raise ValueError("Found non .pcd file in toppath")
-                filepath = os.path.join(toppath, filename)
+                if not filename.endswith(".pcd"):
+                    raise ValueError("Found non .pcd file in toppath: ", filename)
+                filepath = os.path.join(classpath, filename)
                 self.points.append(parse_pcd_file(filepath,
                                                   dtype=dtype))
-                self.labels.append(i)
+                self.labels.append(np.array(i, dtype=dtype))
 
     def __getitem__(self, index):
         return self.points[index], self.labels[index]
